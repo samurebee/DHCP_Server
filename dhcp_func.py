@@ -1,10 +1,18 @@
 import struct 
-import socket import *
+from socket import *
+
+
+#references https://avocado89.medium.com/dhcp-packet-analysis-c84827e162f0
+
+def gen_ip():
+
+    ip = random.randint(0, 255)
+
+    
 
 #DHCP OFFER, yiaddr = offered ip, siaddr = server ip, chaddr = clients mac addy
 
-#references https://avocado89.medium.com/dhcp-packet-analysis-c84827e162f0
-def dhcp_offer(xid, yiaddr, siaddr, chaddr):
+def dhcp_offer(xid, yiaddr, siaddr = socket.inet_aton(192.168.0.1), chaddr, broadcast_flag, ciaddr):
 
     packet = b''
 
@@ -14,7 +22,19 @@ def dhcp_offer(xid, yiaddr, siaddr, chaddr):
     hops = struct.pack('!B',1)
     xid = struct.pack('!I',xid)
     sec = struct.pack('!H',60)
-    flags = struct.pack('',)
+
+    flags = struct.pack('!B',0) #FIX
+
+    ciaddr = socket.inet_aton("0.0.0.0") #client has no ip initially thus 0.0.0.0
+
+    yiaddr = gen_ip() #FINISH, 192.168.0.0/24 
+
+    #siaddr is assigned above 
+
+    giaddr = socket.inet_aton("0.0.0.0") #https://www.rfc-editor.org/rfc/rfc2131.html#section-4.1 pg22, we set this to 0 since server and client are on the same subnet
+
+    chaddr = socket.inet_aton(chaddr) #client hardware address, or client mac addy
+
 
 
 
