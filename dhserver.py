@@ -1,11 +1,9 @@
 
 #dhcp offer, request, ack functions 
 
-import struct 
-from socket import *
-
 #import dhcp_func
 import helper_func
+from socket import *
 
 
 
@@ -27,8 +25,6 @@ msg, addr = s.recvfrom(1024) #IP: 0.0.0.0, PORT: 68
 
 # Print the client's MAC Address from the DHCP header
 #print("Client's MAC Address is " + format(msg[28], 'x'), end='') 
-xid = msg[4:8]
-xid = struct.unpack('!I', xid)[0]
 
 # for i in range(29, 34): #Prints MAC ADDRESS
 #     print(":" + format(msg[i], 'x'), end='') #'x' prints in hexadecimal, end ='' is dont add a new line
@@ -36,7 +32,14 @@ xid = struct.unpack('!I', xid)[0]
 
 helper_func.print_chaddr(msg)
 
-print("Client's transaction id is {}".format(hex(xid)))
+helper_func.print_xid(msg)
+
+helper_func.print_flag(msg)
+
+helper_func.print_giaddr()
+
+helper_func.print_ciaddr(msg)
+
 
 #DHCP Offer
 # dhcp_offer()
