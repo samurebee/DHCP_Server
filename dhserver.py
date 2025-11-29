@@ -44,7 +44,7 @@ helper_func.print_flag(msg)
 
 
 #DHCP Offer
-# dhcp_offer()
+dhcp_offer(msg)
 
 
 # Send a UDP message (Broadcast) 
