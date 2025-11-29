@@ -5,13 +5,11 @@ from socket import *
 #GET FUNCTIONS
 
 def get_flag(msg):
-
     flag = struct.unpack('!H',msg[10:12])[0]    
 
     return flag
     
 def get_ciaddr(msg): #Should be 0.0.0.0
-
     ciaddr = msg[12:16]
 
     return inet_ntoa(ciaddr)
@@ -38,7 +36,6 @@ def get_giaddr():
     return inet_ntoa("0.0.0.0") 
 
 def is_unicast(msg):
-
     # if get_giaddr() == "0.0.0.0" and get_flag(msg) == 0 and get_ciaddr(msg) == "0.0.0.0": #FINISH, only handles 1 case 
     #     return 1
 
@@ -53,19 +50,15 @@ def get_leasetime():
 #PRINT FUNCTIONS
 
 def print_chaddr(msg):
-
     print("Client's MAC Address is {}".format(get_chaddr(msg)))
 
 def print_xid(msg):
-
     print("Client's transaction id is {}".format(hex(get_xid(msg))))
 
 def print_flag(msg):
-
     print("Clients flag bit is set to {}".format(hex(get_flag(msg))))
 
 def print_ciaddr(msg):
-
     ciaddr = get_ciaddr(msg)
 
     print("Clients IP Adress is {}".format(inet_ntoa(ciaddr)))
@@ -79,7 +72,6 @@ def print_giaddr():
 #https://www.rfc-editor.org/rfc/rfc2132
 
 def build_options(msg):
-
     options = b''
 
     magic_cookie = b'\x63\x82\x53\x63' # "99.130.83.99" #pg3 of rfc 2132
