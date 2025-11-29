@@ -36,9 +36,11 @@ helper_func.print_xid(msg)
 
 helper_func.print_flag(msg)
 
-helper_func.print_giaddr()
+# helper_func.print_flag(msg)
 
-helper_func.print_ciaddr(msg)
+# helper_func.print_giaddr()
+
+# helper_func.print_ciaddr(msg)
 
 
 #DHCP Offer

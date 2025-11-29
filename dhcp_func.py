@@ -1,4 +1,3 @@
-from socket import *
 import helper_func
 
 
@@ -23,11 +22,11 @@ def dhcp_offer(xid, yiaddr, siaddr = socket.inet_aton(192.168.0.1), chaddr, broa
     xid = struct.pack('!I',helper_func.get_xid())
     sec = struct.pack('!H',60)
 
-    flags = struct.pack('!H',helper_func.is_unicast()) #FIX
+    flags = struct.pack('!H',0) #FIX use isUnicast()
 
     ciaddr = socket.inet_aton(helper_func.get_ciaddr()) #client has no ip initially thus 0.0.0.0
 
-    yiaddr = "192.168.0.2"    #gen_ip() #FINISH, 192.168.0.0/24 HARD CODED COME BACK
+    yiaddr =    #gen_ip() #FINISH, 192.168.0.0/24 HARD CODED COME BACK
 
     #siaddr is assigned above 
 
@@ -40,10 +39,11 @@ def dhcp_offer(xid, yiaddr, siaddr = socket.inet_aton(192.168.0.1), chaddr, broa
 
     file = b'\x00' * 128 #not relevant come back to this 
 
-    magic_cookie = 
 
-    options 
+    options = helper_func.build_options(msg)
 
+
+def 
 
 
 
