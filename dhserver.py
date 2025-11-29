@@ -1,8 +1,9 @@
 
 #dhcp offer, request, ack functions 
 
-#import dhcp_func
+from dhcp_func import *
 import helper_func
+import dhcp_func
 from socket import *
 
 
@@ -20,8 +21,6 @@ s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
 s.bind(DHCP_SERVER)
 
 # Receive a UDP message, clients mac address
-msg, addr = s.recvfrom(1024) #IP: 0.0.0.0, PORT: 68
-
 
 # Print the client's MAC Address from the DHCP header
 #print("Client's MAC Address is " + format(msg[28], 'x'), end='') 
@@ -30,22 +29,31 @@ msg, addr = s.recvfrom(1024) #IP: 0.0.0.0, PORT: 68
 #     print(":" + format(msg[i], 'x'), end='') #'x' prints in hexadecimal, end ='' is dont add a new line
 # print()
 
-helper_func.print_chaddr(msg)
 
-helper_func.print_xid(msg)
+while True:
+    msg, addr = s.recvfrom(1024)
+    helper_func.print_chaddr(msg)
+    helper_func.print_xid(msg)
 
-helper_func.print_flag(msg)
+    mtype = decode_message_type(msg)
+    print("Received DHCP message type:", mtype, "from", addr)
 
-# helper_func.print_flag(msg)
+    if mtype == 1:  # DISCOVER
+        print("Handling DISCOVER")
+        offer_pkt = dhcp_offer(msg)
+        helper_func.print_xid(offer_pkt)
+        s.sendto(offer_pkt, DHCP_CLIENT)
+        print("Sent DHCPOFFER")
 
-# helper_func.print_giaddr()
+    elif mtype == 3:  # REQUEST
+        print("Handling REQUEST")
+        # later: ack_pkt = dhcp_ack(msg)
+        # s.sendto(ack_pkt, DHCP_CLIENT)
+        # print("  Sent DHCPACK")
 
-# helper_func.print_ciaddr(msg)
-
-
-#DHCP Offer
-dhcp_offer(msg)
+    else:
+        print("Unknown/unsupported type:", mtype)
 
 
 # Send a UDP message (Broadcast) 
-s.sendto(b'Hello World!', DHCP_CLIENT)
+#s.sendto(b'Hello World!', DHCP_CLIENT)

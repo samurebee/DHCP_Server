@@ -3,47 +3,51 @@ from helper_func import *
 
 #references https://avocado89.medium.com/dhcp-packet-analysis-c84827e162f0 (errors in the article)
 
-def gen_ip():
-
-    ip = random.randint(0, 255)
-
-    
 
 #DHCP OFFER, yiaddr = offered ip, siaddr = server ip, chaddr = clients mac addy
 #https://www.rfc-editor.org/rfc/rfc2131.html#section-4.1 
 
-def dhcp_offer(msg):
-    packet = b''
+def dhcp_offer(discover_pkt):
+    offer_pkt = b''
 
     op = struct.pack('!B',2) 
 
-    htype = struct.pack('!B',get_htype(msg))
+    htype = get_htype(discover_pkt)
 
-    hlen = struct.pack('!B',get_hlen(msg))
+    hlen = get_hlen(discover_pkt)
 
-    hops = struct.pack('!B',get_hops(msg))
+    hops = get_hops(discover_pkt)
 
-    xid = struct.pack('!I',get_xid(msg))
+    xid = get_xid(discover_pkt)
+    
+    sec = get_sec(discover_pkt)
 
-    sec = struct.pack('!H',get_sec(msg))
+    flags = get_flag(discover_pkt) #FINISH use isUnicast()
 
-    flags = struct.pack('!H',get_flag(msg)) #FINISH use isUnicast()
+    ciaddr = inet_aton("0.0.0.0") #client has no ip thus 0.0.0.0
 
-    ciaddr = socket.inet_aton(get_ciaddr()) #client has no ip thus 0.0.0.0
+    yiaddr = inet_aton("192.168.0.10") #ip were offering
 
-    yiaddr =    
+    siaddr = inet_aton(get_siaddr()) #our/server ip, change to global value later
 
-    siaddr = socket.inet_aton(get_siaddr()) #192.168.0.1
+    giaddr = inet_aton(get_giaddr())
 
-    giaddr = socket.inet_aton(get_giaddr()) 
+    chaddr = get_chaddr_raw(discover_pkt) #client mac address
 
-    chaddr = socket.inet_aton(chaddr) #client hardware address, or client mac addy
+    sname = b'\x00' * 64 #not used
 
-    sname = b'\x00' * 64 #not relevant come back to this 
+    file = b'\x00' * 128 #not used 
 
-    file = b'\x00' * 128 #not relevant come back to this 
+    options = build_options(discover_pkt)
 
-    options = build_options(msg)
+   
+    offer_pkt =  op + htype + hlen + hops + xid + sec + flags + ciaddr + yiaddr + siaddr + giaddr + chaddr + sname + file + options
+
+    return offer_pkt
+
+def dhcp_ack(msg):
+    return None
+
 
 
 
