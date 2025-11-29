@@ -28,7 +28,7 @@ def dhcp_offer(discover_pkt):
 
     yiaddr = inet_aton("192.168.0.10") #ip were offering
 
-    siaddr = inet_aton(get_siaddr()) #our/server ip, change to global value later
+    siaddr = inet_aton("192.168.0.1") #our/server ip, change to global value later
 
     giaddr = inet_aton(get_giaddr())
 
@@ -46,6 +46,7 @@ def dhcp_offer(discover_pkt):
     return offer_pkt
 
 def dhcp_ack(msg):
+    
     return None
 
 

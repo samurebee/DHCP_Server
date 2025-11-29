@@ -40,16 +40,20 @@ while True:
 
     if mtype == 1:  # DISCOVER
         print("Handling DISCOVER")
+
         offer_pkt = dhcp_offer(msg)
+
         helper_func.print_xid(offer_pkt)
+
         s.sendto(offer_pkt, DHCP_CLIENT)
+
         print("Sent DHCPOFFER")
 
     elif mtype == 3:  # REQUEST
         print("Handling REQUEST")
-        # later: ack_pkt = dhcp_ack(msg)
+        # ack_pkt = dhcp_ack(msg)
         # s.sendto(ack_pkt, DHCP_CLIENT)
-        # print("  Sent DHCPACK")
+        # print("Sent DHCPACK")
 
     else:
         print("Unknown/unsupported type:", mtype)

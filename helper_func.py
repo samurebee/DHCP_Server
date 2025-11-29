@@ -124,7 +124,7 @@ def print_xid(msg):
 def build_options(msg):
     options = b''
 
-    magic_cookie = b'\x63\x82\x53\x63' # "99.130.83.99" #pg3 of rfc 2132
+    magic_cookie = b'\x63\x82\x53\x63' # "99.130.83.99", pg3 of rfc 2132
 
     options += magic_cookie
 
@@ -132,11 +132,9 @@ def build_options(msg):
 
     options += struct.pack("!BB", 54,4) + inet_aton(get_siaddr()) # code | len | ipv4, 54 = server identifier 
 
-    options += struct.pack("!BBI",51,4,get_leasetime()) #lease time
+    options += struct.pack("!BBI",51,4,60) #lease time
 
     options += struct.pack("!BB",1,4) + inet_aton("255.255.255.0") #subnet mask 
-
-    options += struct.pack("!BB", 3, 4) + inet_aton(get_siaddr())
 
     #FINISH: ADD OP 3
 
